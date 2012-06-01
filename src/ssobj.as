@@ -38,14 +38,23 @@ package{
 			}
 			
 		}
-		
-		private function rememberUser(userId:String, userRole:String):void{
+		/**
+		 * 用户注册成功，或者从首页用微博账号登陆时，要调用这个方法<br/>
+		 * 
+		 * @param uerId, 用户标识
+		 * @param userRole, 用户角色
+		 * @param expireTime, 微博授权到期时间毫秒数
+		 * <br/>
+		 * 2012/06/01
+		 */ 
+		private function rememberUser(userId:String, userRole:String, expireTime:String="0"):void{
 			//同时保存到sharedobject文件			
 			//FIXME, ADD LOACALPATH FOR MULTI SWF ACCESS
 			//2012/02/01
 			cs = SharedObject.getLocal("ipintu", "/");			
 			cs.data["userId"] = userId;
 			cs.data["roleName"] = userRole;
+			cs.data["expireTime"] = expireTime;
 			//存文件
 			var result:String = cs.flush(500);
 			//判断是否保存成功
