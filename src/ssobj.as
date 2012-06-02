@@ -27,7 +27,9 @@ package{
 			if(ExternalInterface.available){
 				try{
 					GaiaDebug.log(">>> to add callback: cacheUserForFlash");
-					ExternalInterface.addCallback("cacheUserForFlash", rememberUser);				
+					ExternalInterface.addCallback("cacheUserForFlash", rememberUser);			
+					GaiaDebug.log(">>> to add callback: isWeiboExprired");
+					ExternalInterface.addCallback("isWeiboExprired", needReAuthorized);			
 				}catch(e:SecurityError){
 					GaiaDebug.error(">>> add callback SecurityError!");
 				}catch(e:Error){
@@ -60,6 +62,17 @@ package{
 			//判断是否保存成功
 			if(result==SharedObjectFlushStatus.FLUSHED){
 				GaiaDebug.log("User cache succeed!");
+			}
+		}
+		
+		private function needReAuthorized():String{
+			cs = SharedObject.getLocal("ipintu", "/");	
+			var expireTime:Number = Number(cs.data["expireTime"]);
+			var now:Number = new Date().getTime();
+			if(expireTime>now){
+				return "false";
+			}else{
+				return "true";
 			}
 		}
 		
